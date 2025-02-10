@@ -4,7 +4,11 @@ import { RegisterSchema } from "@/src/schemas";
 
 const { API_URL } = process.env;
 
-export async function register(formData: FormData) {
+type ActionStateType = {
+  errors: string[];
+};
+
+export async function register(prevState: ActionStateType, formData: FormData) {
   const registerData = {
     name: formData.get("name"),
     email: formData.get("email"),
@@ -15,9 +19,12 @@ export async function register(formData: FormData) {
   //validar
   const register = RegisterSchema.safeParse(registerData);
 
-  const errors = register.error?.errors.map((error) => error.message);
-
-  console.log("errors", errors);
+  if (!register.success) {
+    const errors = register.error.errors.map((error) => error.message);
+    return {
+      errors,
+    };
+  }
 
   //registrar al usuario
   const url = `${API_URL}/auth/create_account`;
@@ -35,6 +42,9 @@ export async function register(formData: FormData) {
   });
 
   const json = await req.json();
-
   console.log("json", json);
+
+  return {
+    errors: [],
+  };
 }
