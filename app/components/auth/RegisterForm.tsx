@@ -3,19 +3,23 @@
 import { register } from "@/actions/create-account-action";
 import { useFormState } from "react-dom";
 import ErrorMessage from "../ui/ErrorMessage";
+import SuccessMessage from "../ui/SuccessMessage";
+import SubmitButton from "../ui/SubmitButton";
 
 export default function RegisterForm() {
   const [state, dispatch] = useFormState(register, {
     errors: [],
+    success: "",
   });
-
-  console.log("state", state);
 
   return (
     <section>
       <form className="mt-14 space-y-5" noValidate action={dispatch}>
         {state.errors.length > 0 &&
-          state.errors.map((error) => <ErrorMessage />)}
+          state.errors.map((error) => (
+            <ErrorMessage key={error}>{error}</ErrorMessage>
+          ))}
+        {state.success && <SuccessMessage>{state.success}</SuccessMessage>}
 
         <div className="flex flex-col gap-2">
           <label className="text-2xl font-bold" htmlFor="email">
@@ -61,11 +65,7 @@ export default function RegisterForm() {
           />
         </div>
 
-        <input
-          type="submit"
-          value="Registrarme"
-          className="block w-full cursor-pointer rounded-lg bg-purple-950 p-3 text-xl font-black text-white hover:bg-purple-800"
-        />
+        <SubmitButton pendingText="Registrando..." buttonText="Registrar" />
       </form>
     </section>
   );
