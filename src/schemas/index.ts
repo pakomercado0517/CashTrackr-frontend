@@ -21,3 +21,24 @@ export const SuccessSchema = z.string();
 export const ErrorResponseSchema = z.object({
   error: z.string(),
 });
+
+export const TokenSchema = z
+  .string({ message: "Token inválido" })
+  .length(6, { message: "Token inválido" });
+
+export const LoginSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "El email es obligatorio" })
+    .email({ message: "Email no válido" }),
+  password: z
+    .string()
+    .min(8, { message: "El password es muy corto, mínimo 8 caracteres" }),
+});
+
+export const ForgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "El email es obligatorio" })
+    .email({ message: "Email no válido" }),
+});

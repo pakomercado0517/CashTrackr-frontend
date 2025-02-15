@@ -2,25 +2,42 @@
 
 import { register } from "@/actions/create-account-action";
 import { useFormState } from "react-dom";
-import ErrorMessage from "../ui/ErrorMessage";
-import SuccessMessage from "../ui/SuccessMessage";
 import SubmitButton from "../ui/SubmitButton";
+import { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 export default function RegisterForm() {
+  const ref = useRef<HTMLFormElement>(null);
   const [state, dispatch] = useFormState(register, {
     errors: [],
     success: "",
   });
 
+  useEffect(() => {
+    if (state.success) {
+      ref.current?.reset();
+    }
+
+    if (state.errors.length > 0) {
+      state.errors.map((error) =>
+        toast.error(error, {
+          autoClose: 3000,
+          theme: "colored",
+        }),
+      );
+    }
+
+    if (state.success) {
+      toast.success(state.success, {
+        autoClose: 3000,
+        theme: "colored",
+      });
+    }
+  }, [state]);
+
   return (
     <section>
-      <form className="mt-14 space-y-5" noValidate action={dispatch}>
-        {state.errors.length > 0 &&
-          state.errors.map((error) => (
-            <ErrorMessage key={error}>{error}</ErrorMessage>
-          ))}
-        {state.success && <SuccessMessage>{state.success}</SuccessMessage>}
-
+      <form className="mt-14 space-y-5" noValidate action={dispatch} ref={ref}>
         <div className="flex flex-col gap-2">
           <label className="text-2xl font-bold" htmlFor="email">
             Email

@@ -1,9 +1,37 @@
 "use client";
 
+import { authenticateUser } from "@/actions/authenticate-user-action";
+import { useEffect, useRef } from "react";
+import { useFormState } from "react-dom";
+import { toast } from "react-toastify";
+import SubmitButton from "../ui/SubmitButton";
+
 export default function LoginForm() {
+  const ref = useRef<HTMLFormElement>(null);
+  const [state, dispatch] = useFormState(authenticateUser, {
+    errors: [],
+    success: "",
+  });
+
+  useEffect(() => {
+    if (state.success) {
+      ref.current?.reset();
+    }
+
+    if (state.errors.length > 0) {
+      state.errors.forEach((error) =>
+        toast.error(error, { autoClose: 3000, theme: "colored" }),
+      );
+    }
+
+    if (state.success) {
+      toast.success(state.success, { autoClose: 3000, theme: "colored" });
+    }
+  }, [state]);
+
   return (
     <>
-      <form className="mt-14 space-y-5" noValidate>
+      <form className="mt-14 space-y-5" noValidate action={dispatch}>
         <div className="flex flex-col gap-2">
           <label className="text-2xl font-bold">Email</label>
 
@@ -27,10 +55,9 @@ export default function LoginForm() {
           />
         </div>
 
-        <input
-          type="submit"
-          value="Iniciar Sesión"
-          className="w-full cursor-pointer rounded-lg bg-purple-950 p-3 text-xl font-black text-white hover:bg-purple-800"
+        <SubmitButton
+          pendingText="Enviando Información..."
+          buttonText="Iniciar Sesión"
         />
       </form>
     </>

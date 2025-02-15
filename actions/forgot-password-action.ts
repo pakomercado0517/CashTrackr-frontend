@@ -1,8 +1,7 @@
 "use server";
-
 import {
   ErrorResponseSchema,
-  RegisterSchema,
+  ForgotPasswordSchema,
   SuccessSchema,
 } from "@/src/schemas";
 
@@ -13,27 +12,26 @@ type ActionStateType = {
   success: string;
 };
 
-export async function register(prevState: ActionStateType, formData: FormData) {
-  const registerData = {
-    name: formData.get("name"),
+export async function forgotPassword(
+  prevState: ActionStateType,
+  formData: FormData,
+) {
+  const resetData = {
     email: formData.get("email"),
-    password: formData.get("password"),
-    password_confirmation: formData.get("password_confirmation"),
   };
 
-  //validar
-  const register = RegisterSchema.safeParse(registerData);
+  const email = ForgotPasswordSchema.safeParse(resetData);
 
-  if (!register.success) {
-    const errors = register.error.errors.map((error) => error.message);
+  if (!email.success) {
+    const errors = email.error.errors.map((error) => error.message);
     return {
       errors,
       success: "",
     };
   }
 
-  //registrar al usuario
-  const url = `${API_URL}/auth/create_account`;
+  // Reset password
+  const url = `${API_URL}/auth/forgot_password`;
 
   const req = await fetch(url, {
     method: "POST",
@@ -41,20 +39,20 @@ export async function register(prevState: ActionStateType, formData: FormData) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: register.data?.name,
-      email: register.data?.email,
-      password: register.data?.password,
+      email: email.data.email,
     }),
   });
 
   const json = await req.json();
-  if (req.status === 409) {
+
+  if (req.status === 404) {
     const { error } = ErrorResponseSchema.parse(json);
     return {
       errors: [error],
       success: "",
     };
   }
+
   const success = SuccessSchema.parse(json.message);
 
   return {
