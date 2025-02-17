@@ -1,7 +1,10 @@
 "use server";
 
-import { ErrorResponseSchema, LoginSchema, SuccessSchema } from "@/src/schemas";
-import { cookies } from "next/headers";
+import {
+  ErrorResponseSchema,
+  ResetPasswordSchema,
+  SuccessSchema,
+} from "@/src/schemas";
 
 const { API_URL } = process.env;
 
@@ -10,27 +13,26 @@ type ActionStateType = {
   success: string;
 };
 
-export async function authenticateUser(
+export const resetPassword = async (
+  token: string,
   prevState: ActionStateType,
   formData: FormData,
-) {
-  const loginData = {
-    email: formData.get("email"),
+) => {
+  const newPasswordData = {
     password: formData.get("password"),
+    password_confirmation: formData.get("password_confirmation"),
   };
 
-  const login = LoginSchema.safeParse(loginData);
+  const resetPassword = ResetPasswordSchema.safeParse(newPasswordData);
 
-  if (!login.success) {
-    const errors = login.error.errors.map((issue) => issue.message);
+  if (!resetPassword.success) {
     return {
-      errors,
+      errors: resetPassword.error.errors.map((issue) => issue.message),
       success: "",
     };
   }
 
-  // Authenticate user
-  const url = `${API_URL}/auth/login`;
+  const url = `${API_URL}/auth/reset_password/${token}`;
 
   const req = await fetch(url, {
     method: "POST",
@@ -38,8 +40,7 @@ export async function authenticateUser(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email: login.data.email,
-      password: login.data.password,
+      password: newPasswordData.password,
     }),
   });
 
@@ -53,18 +54,10 @@ export async function authenticateUser(
     };
   }
 
-  //Seteamos la cookie
-  cookies().set({
-    name: "CASHTRACKR_TOKEN",
-    value: json.token,
-    httpOnly: true,
-    path: "/",
-  });
-
   const success = SuccessSchema.parse(json.message);
 
   return {
     errors: [],
     success,
   };
-}
+};

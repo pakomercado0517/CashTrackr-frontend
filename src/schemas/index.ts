@@ -33,7 +33,7 @@ export const LoginSchema = z.object({
     .email({ message: "Email no válido" }),
   password: z
     .string()
-    .min(8, { message: "El password es muy corto, mínimo 8 caracteres" }),
+    .min(1, { message: "El password es muy corto, mínimo 8 caracteres" }),
 });
 
 export const ForgotPasswordSchema = z.object({
@@ -42,3 +42,23 @@ export const ForgotPasswordSchema = z.object({
     .min(1, { message: "El email es obligatorio" })
     .email({ message: "Email no válido" }),
 });
+
+export const UserSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  email: z.string().email(),
+});
+
+export const ResetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, { message: "El password es muy corto, mínimo 8 caracteres" }),
+    password_confirmation: z.string(),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "Las contraseñas no coinciden",
+    path: ["password_confirmation"],
+  });
+
+export type User = z.infer<typeof UserSchema>;

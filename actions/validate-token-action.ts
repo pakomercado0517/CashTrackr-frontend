@@ -1,9 +1,6 @@
 "use server";
-import {
-  ErrorResponseSchema,
-  ForgotPasswordSchema,
-  SuccessSchema,
-} from "@/src/schemas";
+
+import { ErrorResponseSchema, SuccessSchema, TokenSchema } from "@/src/schemas";
 
 const { API_URL } = process.env;
 
@@ -12,34 +9,28 @@ type ActionStateType = {
   success: string;
 };
 
-export async function forgotPassword(
+export const validateToken = async (
+  token: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   prevState: ActionStateType,
-  formData: FormData,
-) {
-  const resetData = {
-    email: formData.get("email"),
-  };
+) => {
+  const resetPasswordToken = TokenSchema.safeParse(token);
 
-  const forgotPassword = ForgotPasswordSchema.safeParse(resetData);
-
-  if (!forgotPassword.success) {
-    const errors = forgotPassword.error.errors.map((issue) => issue.message);
+  if (!resetPasswordToken.success) {
     return {
-      errors,
+      errors: resetPasswordToken.error.errors.map((issue) => issue.message),
       success: "",
     };
   }
 
-  // Reset password
-  const url = `${API_URL}/auth/forgot_password`;
-
+  const url = `${API_URL}/auth/validate_token`;
   const req = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email: forgotPassword.data.email,
+      token,
     }),
   });
 
@@ -59,4 +50,4 @@ export async function forgotPassword(
     errors: [],
     success,
   };
-}
+};

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { authenticateUser } from "@/actions/authenticate-user-action";
@@ -5,8 +6,10 @@ import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import SubmitButton from "../ui/SubmitButton";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
   const [state, dispatch] = useFormState(authenticateUser, {
     errors: [],
@@ -25,7 +28,11 @@ export default function LoginForm() {
     }
 
     if (state.success) {
-      toast.success(state.success, { autoClose: 3000, theme: "colored" });
+      toast.success(state.success, {
+        autoClose: 1500,
+        theme: "colored",
+        onClose: () => router.push("/admin"),
+      });
     }
   }, [state]);
 
