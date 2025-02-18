@@ -1,14 +1,9 @@
 import EditBudgetForm from "@/app/components/admin/budgets/EditBudgetForm";
 import { getToken } from "@/src/auth/token";
 import { BudgetAPIResponseSchema } from "@/src/schemas/budgets";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-type EditBudgetPageProps = {
-  params: {
-    id: string;
-  };
-};
 
 async function getUserBudgetById(id: string) {
   const token = getToken();
@@ -25,11 +20,26 @@ async function getUserBudgetById(id: string) {
   }
   const json = await req.json();
   const budget = BudgetAPIResponseSchema.parse(json);
-
   return budget;
 }
 
-export default async function EditBudgetPage({ params }: EditBudgetPageProps) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const budget = await getUserBudgetById(params.id);
+  return {
+    title: `CashTrackr - ${budget.name}`,
+    description: `CashTrackr - ${budget.name}`,
+  };
+}
+
+export default async function EditBudgetPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
   const budget = await getUserBudgetById(id);
   return (
