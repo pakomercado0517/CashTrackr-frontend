@@ -1,13 +1,13 @@
 //Data Access Layer for authentication
 import "server-only";
 import { cache } from "react";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { UserSchema } from "../schemas";
+import { getToken } from "./token";
 const { API_URL } = process.env;
 
 export const verifySession = cache(async () => {
-  const token = cookies().get("CASHTRACKR_TOKEN")?.value;
+  const token = getToken();
   if (!token) {
     redirect("/auth/login");
   }
