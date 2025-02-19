@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ExpenseAPIResponseSchema } from "./expenses";
 
 export const DraftBudgetSchema = z.object({
   name: z
@@ -16,8 +17,15 @@ export const BudgetAPIResponseSchema = z.object({
   userId: z.number(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  expenses: z.array(ExpenseAPIResponseSchema),
 });
 
-export const BudgetsAPIResponseSchema = z.array(BudgetAPIResponseSchema);
+export const PasswordValidationSchema = z
+  .string()
+  .min(1, { message: "El password es obligatorio" });
+
+export const BudgetsAPIResponseSchema = z.array(
+  BudgetAPIResponseSchema.omit({ expenses: true }),
+);
 
 export type Budget = z.infer<typeof BudgetAPIResponseSchema>;

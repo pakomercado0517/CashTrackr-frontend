@@ -1,7 +1,7 @@
 "use client";
 
 import { Budget } from "@/src/schemas/budgets";
-import SubmitButton from "../../ui/SubmitButton";
+import SubmitButton from "../ui/SubmitButton";
 import BudgetForm from "./BudgetForm";
 import { useFormState } from "react-dom";
 import editBudget from "@/actions/budget-edit-action";

@@ -3,6 +3,7 @@
 import { getToken } from "@/src/auth/token";
 import { SuccessSchema } from "@/src/schemas";
 import { DraftBudgetSchema } from "@/src/schemas/budgets";
+import { revalidatePath } from "next/cache";
 
 const { API_URL } = process.env;
 
@@ -46,16 +47,8 @@ export default async function createBudget(
 
   const json = await req.json();
 
-  // if (!req.ok) {
-  //   const { error } = ErrorResponseSchema.parse(json);
-  //   return {
-  //     errors: [error],
-  //     success: "",
-  //   };
-  // }
-
+  revalidatePath("/admin");
   const success = SuccessSchema.parse(json.message);
-
   return {
     errors: [],
     success,

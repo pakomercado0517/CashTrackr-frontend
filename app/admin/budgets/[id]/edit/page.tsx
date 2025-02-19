@@ -1,27 +1,7 @@
-import EditBudgetForm from "@/app/components/admin/budgets/EditBudgetForm";
-import { getToken } from "@/src/auth/token";
-import { BudgetAPIResponseSchema } from "@/src/schemas/budgets";
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-
-async function getUserBudgetById(id: string) {
-  const token = getToken();
-  const url = `${process.env.API_URL}/budgets/${id}`;
-
-  const req = await fetch(url, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!req.ok) {
-    notFound();
-  }
-  const json = await req.json();
-  const budget = BudgetAPIResponseSchema.parse(json);
-  return budget;
-}
+import EditBudgetForm from "@/app/components/budgets/EditBudgetForm";
+import { getUserBudgetById } from "@/src/services/budgets";
 
 export async function generateMetadata({
   params,

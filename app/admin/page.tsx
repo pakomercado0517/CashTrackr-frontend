@@ -3,7 +3,8 @@ import { BudgetsAPIResponseSchema } from "@/src/schemas/budgets";
 import { formatCurrency, formatDate } from "@/utils";
 import { Metadata } from "next";
 import Link from "next/link";
-import BudgetMenu from "../components/admin/budgets/BudgetMenu";
+import BudgetMenu from "../components/budgets/BudgetMenu";
+import DeleteBudgetModal from "../components/budgets/DeleteBugetModal";
 
 export const metadata: Metadata = {
   title: "CashTrackr - Panel de Administración",
@@ -21,6 +22,7 @@ async function getUserBudgets() {
   });
 
   const json = await req.json();
+  console.log("json", json);
 
   const budgets = BudgetsAPIResponseSchema.parse(json);
 
@@ -50,40 +52,43 @@ export default async function AdminPage() {
         </Link>
       </div>
       {budgets.length ? (
-        <ul
-          role="list"
-          className="mt-10 divide-y divide-gray-300 border shadow-lg"
-        >
-          {budgets.map((budget) => (
-            <li key={budget.id} className="flex justify-between gap-x-6 p-5">
-              <div className="flex min-w-0 gap-x-4">
-                <div className="min-w-0 flex-auto space-y-2">
-                  <p className="text-sm font-semibold leading-6 text-gray-900">
-                    <Link
-                      href={`/admin/budgets/${budget.id}`}
-                      className="cursor-pointer text-2xl font-bold hover:underline"
-                    >
-                      {budget.name}
-                    </Link>
-                  </p>
-                  <p className="text-xl font-bold text-amber-500">
-                    {/* El signo de + al inicio de budget, convierte de string a number el valor */}
-                    {formatCurrency(+budget.amount)}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Última actualización:{" "}
-                    <span className="font-bold">
-                      {formatDate(budget.updatedAt)}
-                    </span>
-                  </p>
+        <>
+          <ul
+            role="list"
+            className="mt-10 divide-y divide-gray-300 border shadow-lg"
+          >
+            {budgets.map((budget) => (
+              <li key={budget.id} className="flex justify-between gap-x-6 p-5">
+                <div className="flex min-w-0 gap-x-4">
+                  <div className="min-w-0 flex-auto space-y-2">
+                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                      <Link
+                        href={`/admin/budgets/${budget.id}`}
+                        className="cursor-pointer text-2xl font-bold hover:underline"
+                      >
+                        {budget.name}
+                      </Link>
+                    </p>
+                    <p className="text-xl font-bold text-amber-500">
+                      {/* El signo de + al inicio de budget, convierte de string a number el valor */}
+                      {formatCurrency(+budget.amount)}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Última actualización:{" "}
+                      <span className="font-bold">
+                        {formatDate(budget.updatedAt)}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex shrink-0 items-center gap-x-6">
-                <BudgetMenu budgetId={budget.id} />
-              </div>
-            </li>
-          ))}
-        </ul>
+                <div className="flex shrink-0 items-center gap-x-6">
+                  <BudgetMenu budgetId={budget.id} />
+                </div>
+              </li>
+            ))}
+          </ul>
+          <DeleteBudgetModal />
+        </>
       ) : (
         <p className="py-20 text-center">
           No hay presupuestos aún{" "}

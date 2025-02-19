@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import BudgetForm from "./BudgetForm";
-import SubmitButton from "../../ui/SubmitButton";
+import SubmitButton from "../ui/SubmitButton";
 
 export default function CreateBudgetForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -29,10 +29,10 @@ export default function CreateBudgetForm() {
     if (state.success) {
       ref.current?.reset();
       toast.success(state.success, {
-        autoClose: 1200,
+        autoClose: 2000,
         theme: "colored",
-        onClose: () => router.push("/admin"),
       });
+      router.push("/admin");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
