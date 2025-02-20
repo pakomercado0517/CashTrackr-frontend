@@ -6,6 +6,7 @@ import createExpense from "@/actions/create-expense-action";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import SubmitButton from "../ui/SubmitButton";
 
 export default function AddExpenseForm({
   closeModal,
@@ -55,10 +56,9 @@ export default function AddExpenseForm({
         action={dispatch}
       >
         <ExpenseForm />
-        <input
-          type="submit"
-          className="w-full cursor-pointer bg-amber-500 p-3 font-bold uppercase text-white transition-colors hover:bg-amber-600"
-          value="Registrar Gasto"
+        <SubmitButton
+          pendingText="Registrando..."
+          buttonText="Registrar Gasto"
         />
       </form>
     </>

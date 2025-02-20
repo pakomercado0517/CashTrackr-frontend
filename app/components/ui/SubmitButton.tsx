@@ -15,7 +15,7 @@ export default function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="block w-full cursor-pointer rounded-lg bg-purple-950 p-3 text-xl font-black text-white hover:bg-purple-800"
+      className={`block w-full cursor-pointer rounded-lg bg-purple-950 p-3 text-xl font-black text-white hover:bg-purple-800`}
     >
       <div className="flex items-center justify-center">
         <span className="mr-2">{pending ? <LoadingSpinner /> : ""}</span>{" "}

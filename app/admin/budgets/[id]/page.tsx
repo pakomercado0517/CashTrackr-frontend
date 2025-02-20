@@ -1,4 +1,7 @@
+import ProgressBar from "@/app/components/budgets/ProgressBar";
 import AddExpenseButton from "@/app/components/expenses/AddExpenseButton";
+import ExpenseMenu from "@/app/components/expenses/ExpenseMenu";
+import Amount from "@/app/components/ui/Amount";
 import ModalContainer from "@/app/components/ui/ModalContainer";
 import { getUserBudgetById } from "@/src/services/budgets";
 import { formatCurrency, formatDate } from "@/utils";
@@ -23,6 +26,15 @@ export default async function BudgetByIdPage({
 }) {
   const { id } = params;
   const budget = await getUserBudgetById(id);
+
+  const totalSpent = budget.expenses.reduce(
+    (total, expense) => +expense.amount + total,
+    0,
+  );
+  const totalAvailable = +budget.amount - totalSpent;
+
+  const percentage = ((totalSpent / +budget.amount) * 100).toFixed(2);
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -36,6 +48,14 @@ export default async function BudgetByIdPage({
       </div>
       {budget.expenses.length ? (
         <>
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2">
+            <ProgressBar percentage={+percentage} />
+            <div className="flex flex-col items-center justify-center gap-4 md:items-start">
+              <Amount label="Presupuesto" amount={+budget.amount} />
+              <Amount label="Disponible" amount={totalAvailable} />
+              <Amount label="Gastado" amount={totalSpent} />
+            </div>
+          </div>
           <h1 className="mt-10 text-4xl font-black text-purple-950">
             Gastos en este Presupuesto
           </h1>
@@ -61,6 +81,7 @@ export default async function BudgetByIdPage({
                     </p>
                   </div>
                 </div>
+                <ExpenseMenu expenseId={expense.id} />
               </li>
             ))}
           </ul>

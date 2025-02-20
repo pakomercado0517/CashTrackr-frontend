@@ -13,3 +13,6 @@ export const ExpenseAPIResponseSchema = z.object({
   updatedAt: z.string(),
   budgetId: z.number(),
 });
+
+export type Expense = z.infer<typeof ExpenseAPIResponseSchema>;
+export type DraftExpense = z.infer<typeof DraftExpenseSchema>;
