@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Logo from "../components/ui/Logo";
-import ToastNotification from "../components/ui/ToastNotification";
 import { verifySession } from "@/src/auth/dal";
 import AdminMenu from "../components/admin/AdminMenu";
 
@@ -24,7 +23,6 @@ export default async function AdminLayout({
             <AdminMenu user={user} />
           </div>
         </header>
-        <ToastNotification />
         <section className="mx-auto mt-20 max-w-5xl p-3 py-10">
           {children}
         </section>

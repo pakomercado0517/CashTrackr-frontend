@@ -1,5 +1,5 @@
+import Link from "next/link";
 import Logo from "../components/ui/Logo";
-import ToastNotification from "../components/ui/ToastNotification";
 
 export default function AuthLayout({
   children,
@@ -8,11 +8,12 @@ export default function AuthLayout({
 }>) {
   return (
     <section>
-      <ToastNotification />
       <div className="lg:grid lg:min-h-screen lg:grid-cols-2">
         <div className="flex justify-center bg-purple-950 bg-left-bottom bg-no-repeat lg:bg-auth lg:bg-30">
           <div className="w-80 py-10 lg:py-20">
-            <Logo />
+            <Link href={"/"}>
+              <Logo />
+            </Link>
           </div>
         </div>
         <div className="p-10 lg:py-28">

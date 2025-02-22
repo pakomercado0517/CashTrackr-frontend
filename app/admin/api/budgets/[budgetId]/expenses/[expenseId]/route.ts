@@ -1,6 +1,5 @@
 import { verifySession } from "@/src/auth/dal";
 import { getToken } from "@/src/auth/token";
-import exp from "constants";
 
 export async function GET(
   req: Request,
