@@ -38,6 +38,7 @@ export default function AddExpenseForm({
       });
       closeModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return (

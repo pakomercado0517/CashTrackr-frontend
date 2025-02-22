@@ -36,6 +36,7 @@ export default function ConfirmPasswordForm() {
       });
       closeModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   const closeModal = () => {

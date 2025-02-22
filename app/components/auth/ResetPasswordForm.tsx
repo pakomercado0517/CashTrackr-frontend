@@ -30,6 +30,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
         onClose: () => router.push("/auth/login"),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return (

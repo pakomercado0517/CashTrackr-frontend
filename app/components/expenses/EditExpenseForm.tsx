@@ -34,6 +34,7 @@ export default function EditExpenseForm({
     fetch(url)
       .then((res) => res.json())
       .then((data) => setExpense(data));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -52,6 +53,7 @@ export default function EditExpenseForm({
       });
       closeModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return (

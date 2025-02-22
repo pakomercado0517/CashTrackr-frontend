@@ -1,4 +1,4 @@
-import { DraftExpense, Expense } from "@/src/schemas/expenses";
+import { DraftExpense } from "@/src/schemas/expenses";
 
 type ExpenseFormProps = {
   expense?: DraftExpense;
