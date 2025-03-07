@@ -54,7 +54,7 @@ export default async function AdminPage() {
         <>
           <ul
             role="list"
-            className="mt-10 divide-y divide-gray-300 border shadow-lg"
+            className="mx-auto mt-10 max-w-5xl divide-y divide-gray-300 border shadow-lg"
           >
             {budgets.map((budget) => (
               <li key={budget.id} className="flex justify-between gap-x-6 p-5">

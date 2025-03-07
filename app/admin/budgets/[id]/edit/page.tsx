@@ -41,7 +41,7 @@ export default async function EditBudgetPage({
           Volver
         </Link>
       </div>
-      <div className="mt-10 border p-10 shadow-lg">
+      <div className="mx-auto mt-10 max-w-5xl border p-10 shadow-lg">
         <EditBudgetForm budget={budget} />
       </div>
     </>

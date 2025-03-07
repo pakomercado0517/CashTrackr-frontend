@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function CreateBudgetPage() {
   return (
     <>
-      <div className="flex flex-col-reverse items-center md:flex-row md:justify-between">
+      <div className="flex w-full flex-col-reverse items-center justify-center p-12 md:flex-row md:justify-between">
         <div className="w-full md:w-auto">
           <h1 className="my-5 text-4xl font-black text-purple-950">
             Nuevo Presupuesto
@@ -22,7 +22,7 @@ export default function CreateBudgetPage() {
         </Link>
       </div>
 
-      <div className="mt-10 border p-10 shadow-lg">
+      <div className="mx-auto mt-10 max-w-5xl border p-10 shadow-lg">
         <CreateBudgetForm />
       </div>
     </>

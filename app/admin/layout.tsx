@@ -12,9 +12,9 @@ export default async function AdminLayout({
 
   return (
     <>
-      <div className="">
+      <div className="grid min-h-screen w-full grid-rows-[auto,1fr,auto]">
         <header className="bg-purple-950 py-5">
-          <div className="mx-auto flex max-w-5xl flex-col items-center justify-between lg:flex-row">
+          <div className="items-evenly mx-auto flex max-w-5xl flex-row items-center justify-between">
             <div className="w-96">
               <Link href={"/admin"}>
                 <Logo />
@@ -23,7 +23,7 @@ export default async function AdminLayout({
             <AdminMenu user={user} />
           </div>
         </header>
-        <section className="mx-auto mt-20 max-w-5xl p-3 py-10">
+        <section className="mx-auto mt-20 w-screen gap-20 p-3">
           {children}
         </section>
 
